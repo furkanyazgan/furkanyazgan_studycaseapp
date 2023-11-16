@@ -1,40 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:furkanyazgan_studycaseapp/core/controllers/riverpod_management.dart';
+import 'package:furkanyazgan_studycaseapp/ui/screens/users/users_page.dart';
 
-class LoginPage extends StatelessWidget {
-  final purpleColor = Color(0xff6688FF);
-  final darkTextColor = Color(0xff1F1A3D);
-  final lightTextColor = Color(0xff999999);
-  final textFieldColor = Color(0xffF5F6FA);
-  final borderColor = Color(0xffD9D9D9);
+class LoginPage extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginPageState();
+}
 
-  Widget getTextField({required String hint}) {
-    return TextField(
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
-            borderSide: BorderSide(color: Colors.transparent, width: 0),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.r),
-            borderSide: BorderSide(color: Colors.transparent, width: 0),
-          ),
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-          filled: true,
-          fillColor: Color(0xff1b1f2b),
-          hintText: hint,
-          hintStyle: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey)),
-    );
-  }
+class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -64,17 +44,70 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: 24.h,
               ),
-              getTextField(hint: "E-posta"),
+              TextField(
+                controller: ref.read(loginRiverpod).emailController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                    filled: true,
+                    fillColor: Color(0xff1b1f2b),
+                    hintText: "E-posta",
+                    hintStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey)),
+              ),
               SizedBox(
                 height: 16.h,
               ),
-              getTextField(hint: "Parola"),
+              TextField(
+                controller: ref.read(loginRiverpod).passwordController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 0),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                    filled: true,
+                    fillColor: Color(0xff1b1f2b),
+                    hintText: "Parola",
+                    hintStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey)),
+              ),
               SizedBox(
-                height: 16.h,
+                height: 10.h,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5.w),
+                child: Align(alignment: Alignment.centerLeft,
+                  child: Visibility(child: Text("E-posta veya parola yanlış.",style: TextStyle(color: Colors.red,fontSize: 12.sp),)
+                  ,visible: ref.watch(loginRiverpod).isShowError,),
+                ),
               ),
               Spacer(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Divider(
                   color: Colors.white,
                 ),
@@ -83,8 +116,19 @@ class LoginPage extends StatelessWidget {
                 height: 16.h,
               ),
               InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(10),
+                onTap: () {
+                  ref.read(loginRiverpod).loginClick().then((value) {
+                    print(value.toString());
+                    if(value == true){
+                      print("trueeee");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  UsersPage()),
+                      );
+                    }
+                  });
+                },
+                borderRadius: BorderRadius.circular(10.r),
                 child: Container(
                   child: Center(
                     child: Text(

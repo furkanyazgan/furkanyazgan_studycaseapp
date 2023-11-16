@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:furkanyazgan_studycaseapp/ui/screens/login/login_page.dart';
+import 'package:furkanyazgan_studycaseapp/ui/screens/splash/splash_page.dart';
+import 'package:furkanyazgan_studycaseapp/ui/screens/users/users_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: LoginPage(),
+      child: SplashPage(),
     );
   }
 }
